@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internship Assignment - Authentication</title>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --error: #ff3333;
+            --gray: #6c757d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .welcome-section p {
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .auth-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+
+        .form-title h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            min-height: 20px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+        }
+
+        .form-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success);
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .welcome-section {
+                padding: 30px 20px;
+            }
+            
+            .auth-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-section">
+            <h1>Welcome to Our Platform</h1>
+            <p>Join thousands of users who manage their accounts with our secure authentication system.</p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">👑</div>
+                    <div>
+                        <h3>Admin Access</h3>
+                        <p>Full control panel with advanced features</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">👤</div>
+                    <div>
+                        <h3>User Dashboard</h3>
+                        <p>Personalized experience for regular users</p>
+                    </div>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🛒</div>
+                    <div>
+                        <h3>Vendor Portal</h3>
+                        <p>Manage your products and services</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-section">
+            <div class="form-container">
+               
+                <div id="loginForm">
+                    <div class="form-title">
+                        <h2>Login</h2>
+                        <p>Welcome back! Please enter your credentials</p>
+                    </div>
+                    
+                    <div id="loginSuccess" class="success-message hidden"></div>
+                    
+                    <form id="loginFormElement">
+                        <div class="form-group">
+                            <label for="loginEmail">Email Address</label>
+                            <input type="email" id="loginEmail" class="form-control" required>
+                            <span class="error-message" id="loginEmailError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" class="form-control" required>
+                            <span class="error-message" id="loginPasswordError"></span>
+                        </div>
+                        
+                        <button type="submit" class="btn">Login</button>
+                    </form>
+                    
+                    <div class="form-footer">
+                        Don't have an account? <a href="#" id="showSignup">Sign up</a>
+                    </div>
+                </div>
+                
+               
+                <div id="signupForm" class="hidden">
+                    <div class="form-title">
+                        <h2>Create Account</h2>
+                        <p>Join us today! It takes only a few steps</p>
+                    </div>
+                    
+                    <div id="signupSuccess" class="success-message hidden"></div>
+                    
+                    <form id="signupFormElement">
+                        <div class="form-group">
+                            <label for="signupName">Full Name</label>
+                            <input type="text" id="signupName" class="form-control" required>
+                            <span class="error-message" id="signupNameError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupEmail">Email Address</label>
+                            <input type="email" id="signupEmail" class="form-control" required>
+                            <span class="error-message" id="signupEmailError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" class="form-control" required>
+                            <span class="error-message" id="signupPasswordError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signupConfirmPassword">Confirm Password</label>
+                            <input type="password" id="signupConfirmPassword" class="form-control" required>
+                            <span class="error-message" id="signupConfirmPasswordError"></span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="userType">Account Type</label>
+                            <select id="userType" class="form-control" required>
+                                <option value="">Select account type</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">Regular User</option>
+                                <option value="vendor">Vendor</option>
+                            </select>
+                            <span class="error-message" id="userTypeError"></span>
+                        </div>
+                        
+                        <button type="submit" class="btn">Create Account</button>
+                    </form>
+                    
+                    <div class="form-footer">
+                        Already have an account? <a href="#" id="showLogin">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const showSignup = document.getElementById('showSignup');
+        const showLogin = document.getElementById('showLogin');
+        const loginFormElement = document.getElementById('loginFormElement');
+        const signupFormElement = document.getElementById('signupFormElement');
+        const loginSuccess = document.getElementById('loginSuccess');
+        const signupSuccess = document.getElementById('signupSuccess');
+
+      
+        showSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            signupForm.classList.remove('hidden');
+            clearMessages();
+        });
+
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            signupForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            clearMessages();
+        });
+
+        
+        function clearMessages() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.textContent = '';
+            });
+            loginSuccess.classList.add('hidden');
+            signupSuccess.classList.add('hidden');
+        }
+
+        
+        if (!localStorage.getItem('users')) {
+            localStorage.setItem('users', JSON.stringify([]));
+        }
+
+        
+        signupFormElement.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearMessages();
+            
+            
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const userType = document.getElementById('userType').value;
+            
+           
+            let isValid = true;
+            
+           
+            if (name.length < 3) {
+                document.getElementById('signupNameError').textContent = 'Name must be at least 3 characters';
+                isValid = false;
+            }
+            
+           
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('signupEmailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            }
+            
+           
+            if (password.length < 6) {
+                document.getElementById('signupPasswordError').textContent = 'Password must be at least 6 characters';
+                isValid = false;
+            }
+            
+            
+            if (password !== confirmPassword) {
+                document.getElementById('signupConfirmPasswordError').textContent = 'Passwords do not match';
+                isValid = false;
+            }
+            
+           
+            if (!userType) {
+                document.getElementById('userTypeError').textContent = 'Please select a user type';
+                isValid = false;
+            }
+            
+            if (isValid) {
+               
+                const users = JSON.parse(localStorage.getItem('users'));
+                const emailExists = users.some(user => user.email === email);
+                
+                if (emailExists) {
+                    document.getElementById('signupEmailError').textContent = 'Email already registered';
+                    return;
+                }
+                
+               
+                const newUser = {
+                    name,
+                    email,
+                    password,
+                    userType,
+                    createdAt: new Date().toISOString()
+                };
+                
+              
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                
+                signupSuccess.textContent = 'Account created successfully! You can now login.';
+                signupSuccess.classList.remove('hidden');
+                
+                
+                signupFormElement.reset();
+                
+                setTimeout(() => {
+                    signupForm.classList.add('hidden');
+                    loginForm.classList.remove('hidden');
+                    signupSuccess.classList.add('hidden');
+                }, 2000);
+            }
+        });
+
+        loginFormElement.addEventListener('submit', (e) => {
+            e.preventDefault();
+            clearMessages();
+           
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            
+            let isValid = true;
+            
+            
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                document.getElementById('loginEmailError').textContent = 'Please enter a valid email';
+                isValid = false;
+            }
+            
+            
+            if (password.length < 1) {
+                document.getElementById('loginPasswordError').textContent = 'Please enter your password';
+                isValid = false;
+            }
+            
+            if (isValid) {
+              
+                const users = JSON.parse(localStorage.getItem('users'));
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                   
+                    loginSuccess.textContent = `Welcome back, ${user.name}! Redirecting to ${user.userType} dashboard...`;
+                    loginSuccess.classList.remove('hidden');
+                    
+                   
+                    loginFormElement.reset();
+                    
+                    
+                    setTimeout(() => {
+                        alert(`This would redirect to the ${user.userType} dashboard in a real application.\n\nUser details:\nName: ${user.name}\nEmail: ${user.email}\nType: ${user.userType}`);
+                    }, 1500);
+                } else {
+                    document.getElementById('loginPasswordError').textContent = 'Invalid email or password';
+                }
+            }
+        });
+
+        
+        function initializeSampleUser() {
+            const users = JSON.parse(localStorage.getItem('users'));
+            if (users.length === 0) {
+                users.push({
+                    name: "Admin User",
+                    email: "admin@example.com",
+                    password: "admin123",
+                    userType: "admin",
+                    createdAt: new Date().toISOString()
+                });
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        
+        initializeSampleUser();
+    </script>
+</body>
+</html>
